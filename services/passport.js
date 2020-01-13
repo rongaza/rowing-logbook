@@ -26,6 +26,8 @@ passport.use(
 			clientID: keys.googleClientID,
 			clientSecret: keys.googleClientSecret,
 			callbackURL: '/auth/google/callback',
+			// trust proxy
+			proxy: true,
 		},
 		// do something with user's google access token
 		// ie add to mongo database
