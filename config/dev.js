@@ -13,8 +13,6 @@ module.exports = {
 // mongodb+srv://devAdmin:HKdWhR7sREibyFyR@cluster0-emmyz.mongodb.net/test?retryWrites=true&w=majority
 
 // google prod id
-//1089778278872-hvql6uou4h94ag5dqb58ficvijvtsj0h.apps.googleusercontent.com
+// 1089778278872-hvql6uou4h94ag5dqb58ficvijvtsj0h.apps.googleusercontent.com
 // client secret
 // xDJ2ngZaSVRiPxuVLissuKKy
-
-//1089778278872-hvql6uou4h94ag5dqb58ficvijvtsj0h.apps.googleusercontent.com

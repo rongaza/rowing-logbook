@@ -9,20 +9,23 @@ module.exports = app => {
 			scope: ['profile', 'email'],
 		})
 	);
-	app.get('/auth/google/callback', passport.authenticate('google'));
+	app.get('/auth/google/callback', passport.authenticate('google'), function(req, res) {
+		res.redirect('/workouts');
+	});
 
 	// facebook strategy
-	app.get('/auth/facebook/', passport.authenticate('facebook'));
-	app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(
-		req,
-		res
-	) {
-		res.redirect('/api/current_user');
-	});
+	//requires ssl on heroku
+	// app.get('/auth/facebook/', passport.authenticate('facebook'));
+	// app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(
+	// 	req,
+	// 	res
+	// ) {
+	// 	res.redirect('/');
+	// });
 
 	app.get('/api/logout', (req, res) => {
 		req.logout();
-		res.send(req.user);
+		res.redirect('/');
 	});
 
 	app.get('/api/current_user', (req, res) => {
