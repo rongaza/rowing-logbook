@@ -1,40 +1,33 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import Header from './Header';
 import Landing from './Landing';
-import Test from './Test';
-
-const Dashboard = () => {
-	return <h2>Dashboard</h2>;
-};
-const WorkoutNew = () => {
-	return <h2>WorkoutNew</h2>;
-};
+import Dashboard from './Dashboard';
+import WorkoutForm from './WorkoutForm';
+import EditWorkout from './EditWorkout';
 
 export const App = ({ fetchUser }) => {
 	useEffect(() => {
 		fetchUser();
-	}, [fetchUser]);
+	});
 
-	console.log('running');
 	return (
-		<div>
+		<Container fluid>
 			<BrowserRouter>
-				<Container>
+				<React.Fragment>
 					<Header />
 					<Route path="/" exact component={Landing} />
 					<Route path="/workouts" exact component={Dashboard} />
-					<Route path="/workouts/new" component={WorkoutNew} />
-					<Route path="/test" component={Test} />
-				</Container>
+					<Route path="/workouts/new" component={WorkoutForm} />
+					<Route path="/edit/:id" component={EditWorkout} />
+				</React.Fragment>
 			</BrowserRouter>
-		</div>
+		</Container>
 	);
 };
 
-// connect(mapstatetoprops, actions) -> props
 export default connect(null, actions)(App);
