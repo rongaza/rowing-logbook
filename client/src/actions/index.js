@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, ADD_WORKOUT, FETCH_WORKOUTS } from './types';
+import { FETCH_USER, ADD_WORKOUT, FETCH_WORKOUTS, EDIT_WORKOUT } from './types';
 
 // export const fetchUser = () => {
 // 	// if reduxThunk sees that a function is returned
@@ -25,6 +25,12 @@ export const fetchUser = () => async dispatch => {
 
 export const addWorkout = workout => async dispatch => {
 	const res = await axios.post('/api/workouts', workout);
-	console.log(res);
 	dispatch({ type: ADD_WORKOUT, payload: res.data });
+};
+
+export const editWorkout = workout => async dispatch => {
+	console.log(workout);
+	const res = await axios.put('/api/workouts', workout);
+	console.log(res);
+	// dispatch({type: EDIT_WORKOUT, payload: res.data})
 };

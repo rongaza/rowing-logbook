@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 
 const Meters = ({ title, distance }) => {
 	return (
-		<Card border="success" style={{ width: '12rem', height: '7rem' }}>
+		<Card border="success">
 			<Card.Body>
 				<Card.Text className="text-center">{distance}</Card.Text>
 			</Card.Body>

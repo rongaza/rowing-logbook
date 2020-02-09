@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Row, Col, CardDeck } from 'react-bootstrap';
 import { Container, Button } from 'react-floating-action-button';
+import * as actions from '../actions';
 
 import ListWorkouts from './ListWorkouts';
 import WorkoutForm from './WorkoutForm';
 import DisplayCard from './DisplayCard';
 
-const Dashboard = ({ fetchWorkouts, workouts }) => {
+const Dashboard = ({ addWorkout, workouts }) => {
 	const reducer = (acc, obj) => acc + obj.distance;
 	const lifetimeMeters = () => {
 		return workouts.reduce(reducer, 0);
@@ -18,7 +19,7 @@ const Dashboard = ({ fetchWorkouts, workouts }) => {
 		<div className="mx-5">
 			<Row className="pt-5">
 				<Col sm={8}>
-					<WorkoutForm />
+					<WorkoutForm onSubmit={addWorkout} />
 				</Col>
 				<Col>
 					<CardDeck>
@@ -52,4 +53,4 @@ const mapStateToProps = ({ workouts }) => {
 	};
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, actions)(Dashboard);

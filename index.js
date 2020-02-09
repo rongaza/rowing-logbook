@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
+
 require('./models/User');
+require('./models/Workout');
 require('./services/passport');
 
 // mongo DB
@@ -12,6 +15,7 @@ mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: tru
 // create express app
 const app = express();
 
+app.use(bodyParser.json());
 // used to tell express to handle cookies
 // which will be used for authentication by passport
 app.use(
@@ -31,6 +35,7 @@ app.use(passport.session());
 
 // import routes
 require('./routes/authRoutes')(app);
+require('./routes/workoutRoutes')(app);
 
 // handle routing in production
 if (process.env.NODE_ENV === 'production') {

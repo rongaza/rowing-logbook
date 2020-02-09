@@ -1,22 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import WorkoutForm from './WorkoutForm';
+import * as actions from '../actions';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
-const EditWorkout = props => {
-	console.log(props.workout);
+const EditWorkout = ({ workout, editWorkout }) => {
 	return (
 		<React.Fragment>
 			<h2>Edit Workout</h2>
+			<WorkoutForm workout={workout} onSubmit={editWorkout} />
 		</React.Fragment>
 	);
 };
 
 const mapStateToProps = (state, props) => {
 	const workout = state.workouts.find(workout => workout._id === props.match.params.id);
-	console.log(workout);
+
 	return {
 		workout,
 	};
 };
 
-export default connect(mapStateToProps)(EditWorkout);
+export default connect(mapStateToProps, actions)(EditWorkout);

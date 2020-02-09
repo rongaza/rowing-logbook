@@ -9,21 +9,21 @@ import Landing from './Landing';
 import Dashboard from './Dashboard';
 import WorkoutForm from './WorkoutForm';
 import EditWorkout from './EditWorkout';
+import ProtectedRoute from './ProtectedRoute';
 
 export const App = ({ fetchUser }) => {
 	useEffect(() => {
 		fetchUser();
 	});
-
 	return (
 		<Container fluid>
 			<BrowserRouter>
 				<React.Fragment>
 					<Header />
 					<Route path="/" exact component={Landing} />
-					<Route path="/workouts" exact component={Dashboard} />
-					<Route path="/workouts/new" component={WorkoutForm} />
-					<Route path="/edit/:id" component={EditWorkout} />
+					<ProtectedRoute path="/workouts" exact component={Dashboard} />
+					<ProtectedRoute path="/workouts/new" exact component={WorkoutForm} />
+					<ProtectedRoute path="/workouts/edit/:id" exact component={EditWorkout} />
 				</React.Fragment>
 			</BrowserRouter>
 		</Container>

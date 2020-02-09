@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
-import * as actions from '../actions';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Form, Col, Row, Button } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
+import MomentLocaleUtils, { formatDate, parseDate } from 'react-day-picker/moment';
 
-const WorkoutNew = ({ addWorkout }) => {
-	const [date, setDate] = useState(new Date());
-	const [type, setType] = useState('Indoor Rower');
-	const [distance, setDistance] = useState('');
+const WorkoutForm = props => {
+	const [date, setDate] = useState(props.workout ? props.workout.date : new moment());
+	const [type, setType] = useState(props.workout ? props.workout.type : 'Indoor Rower');
+	const [distance, setDistance] = useState(props.workout ? props.workout.distance : '');
 	const [hours, setHours] = useState('');
 	const [mins, setMins] = useState('');
 	const [secs, setSecs] = useState('');
 	const [tenths, setTenths] = useState('');
-	const [weightClass, setWeightClass] = useState(null);
-	const [notes, setNotes] = useState('');
+	const [weightClass, setWeightClass] = useState(props.workout ? props.workout.weightClass : '');
+	const [notes, setNotes] = useState(props.workout ? props.workout.notes : '');
+
+	// used to update record
+	const id = props.workout ? props.workout._id : null;
 
 	const convertTime = () => {
 		return hours + mins + secs + tenths;
 	};
 	const handleSubmit = e => {
 		e.preventDefault();
-		addWorkout({
+		props.onSubmit({
+			id,
 			date,
 			type,
 			distance,
@@ -29,26 +35,31 @@ const WorkoutNew = ({ addWorkout }) => {
 			weightClass,
 			notes,
 		});
-		setDate(new Date());
-		setType('Indoor Rower');
-		setDistance('');
-		setHours('');
-		setMins('');
-		setSecs('');
-		setTenths('');
-		setWeightClass('null');
-		setNotes('');
+		props.history.push('/workouts');
+		// setDate(new Date());
+		// setType('Indoor Rower');
+		// setDistance('');
+		// setHours('');
+		// setMins('');
+		// setSecs('');
+		// setTenths('');
+		// setWeightClass('null');
+		// setNotes('');
 	};
 
 	return (
 		<Form className="" onSubmit={handleSubmit}>
-			<h2>Add Workout</h2>
 			<Row className="pb-3">
 				<Col md={4}>
 					<Form.Label>Date</Form.Label>
 				</Col>
 				<Col md={4}>
-					<DatePicker selected={date} onChange={date => setDate(date)} />
+					<DayPickerInput
+						onDayChange={day => setDate(day)}
+						formatDate={formatDate}
+						parseDate={parseDate}
+						placeholder={`${formatDate(new Date())}`}
+					/>
 				</Col>
 			</Row>
 			<Row>
@@ -171,4 +182,4 @@ const WorkoutNew = ({ addWorkout }) => {
 	);
 };
 
-export default connect(null, actions)(WorkoutNew);
+export default connect(null)(withRouter(WorkoutForm));

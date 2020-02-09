@@ -2,16 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
+import moment from 'moment';
 
 const ListWorkouts = ({ workouts }) => {
+	const sortedWorkouts = workouts.sort((a, b) => {
+		return moment(b.date) - moment(a.date);
+	});
+
 	const renderWorkoutList = () => {
 		if (workouts.length > 0) {
-			return workouts.map(workout => {
+			return sortedWorkouts.map(workout => {
 				const { _id, date, distance, time, type, notes } = workout;
 				return (
 					<tr key={_id}>
 						<td>
-							<Link to={`/edit/${_id}`}>{date}</Link>
+							<Link to={`/workouts/edit/${_id}`}>
+								{moment(date).format('MM/DD/YYYY')}
+							</Link>
 						</td>
 
 						<td>{type}</td>
