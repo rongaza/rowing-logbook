@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, ADD_WORKOUT, FETCH_WORKOUTS, EDIT_WORKOUT } from './types';
+import { FETCH_USER, ADD_WORKOUT, FETCH_WORKOUTS, EDIT_WORKOUT, DELETE_WORKOUT } from './types';
 
 // export const fetchUser = () => {
 // 	// if reduxThunk sees that a function is returned
@@ -29,8 +29,14 @@ export const addWorkout = workout => async dispatch => {
 };
 
 export const editWorkout = workout => async dispatch => {
-	console.log(workout);
 	const res = await axios.put('/api/workouts', workout);
-	console.log(res);
-	// dispatch({type: EDIT_WORKOUT, payload: res.data})
+
+	dispatch({ type: EDIT_WORKOUT, payload: workout });
+};
+
+export const deleteWorkout = _id => dispatch => {
+	console.log('action: delete ', _id);
+	axios.delete('/api/workouts', { data: { id: _id } }).then(workout =>
+		dispatch({ type: DELETE_WORKOUT, payload: workout.data })
+	);
 };

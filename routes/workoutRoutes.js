@@ -33,7 +33,12 @@ module.exports = app => {
 		// console.log('update workout route');
 		// console.log(req.body);
 		// const { _id, date, type, distance, time, weightClass, notes } = req.body;
-		const updatedWorkout = await Workout.findByIdAndUpdate({ _id: req.body.id }, { ...req.body });
+
+		const updatedWorkout = await Workout.findByIdAndUpdate(
+			{ _id: req.body._id },
+			{ ...req.body },
+			{ useFindAndModify: false }
+		);
 
 		try {
 			await updatedWorkout.save();
@@ -41,5 +46,10 @@ module.exports = app => {
 		} catch (error) {
 			res.status(422).send(error);
 		}
+	});
+
+	app.delete('/api/workouts', requireLogin, async (req, res) => {
+		const workout = await Workout.findOneAndDelete({ _id: req.body.id });
+		res.send(workout);
 	});
 };

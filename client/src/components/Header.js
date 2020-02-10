@@ -25,9 +25,9 @@ const Header = ({ auth }) => {
 				return (
 					<React.Fragment>
 						<Nav className="mr-auto">
-							<Nav.Link as={Link} to={'/workouts'}>
-								LOG
-							</Nav.Link>
+							<Navbar.Text>
+								<Link to={'/workouts'}>LOG</Link>
+							</Navbar.Text>
 							<Nav.Link>HISTORY</Nav.Link>
 							<Nav.Link>RANKINGS</Nav.Link>
 							<Nav.Link>RANKED WORKOUTS</Nav.Link>

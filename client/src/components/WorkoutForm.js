@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Form, Col, Row, Button } from 'react-bootstrap';
+import { withRouter, Link } from 'react-router-dom';
+import { Form, Col, Row, Button, InputGroup } from 'react-bootstrap';
 import moment from 'moment';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import MomentLocaleUtils, { formatDate, parseDate } from 'react-day-picker/moment';
+import { formatDate, parseDate } from 'react-day-picker/moment';
 
 const WorkoutForm = props => {
+	// used to update record
+	const _id = props.workout ? props.workout._id : null;
 	const [date, setDate] = useState(props.workout ? props.workout.date : new moment());
 	const [type, setType] = useState(props.workout ? props.workout.type : 'Indoor Rower');
 	const [distance, setDistance] = useState(props.workout ? props.workout.distance : '');
@@ -18,16 +20,40 @@ const WorkoutForm = props => {
 	const [weightClass, setWeightClass] = useState(props.workout ? props.workout.weightClass : '');
 	const [notes, setNotes] = useState(props.workout ? props.workout.notes : '');
 
-	// used to update record
-	const id = props.workout ? props.workout._id : null;
+	const renderSubmitButtons = () => {
+		if (props.workout) {
+			return (
+				<React.Fragment>
+					<Button variant="primary" type="submit">
+						Submit
+					</Button>
+					<Link to={'/workouts'}>
+						<Button variant="secondary" className="ml-2">
+							Cancel
+						</Button>
+					</Link>
+					<Button variant="danger" onClick={handleDelete} className="ml-2">
+						Delete
+					</Button>
+				</React.Fragment>
+			);
+		} else {
+			return (
+				<Button variant="primary" type="submit">
+					Submit
+				</Button>
+			);
+		}
+	};
 
 	const convertTime = () => {
 		return hours + mins + secs + tenths;
 	};
+
 	const handleSubmit = e => {
 		e.preventDefault();
 		props.onSubmit({
-			id,
+			_id,
 			date,
 			type,
 			distance,
@@ -36,21 +62,16 @@ const WorkoutForm = props => {
 			notes,
 		});
 		props.history.push('/workouts');
-		// setDate(new Date());
-		// setType('Indoor Rower');
-		// setDistance('');
-		// setHours('');
-		// setMins('');
-		// setSecs('');
-		// setTenths('');
-		// setWeightClass('null');
-		// setNotes('');
 	};
 
+	const handleDelete = () => {
+		props.deleteWorkout(_id);
+		props.history.push('/workouts');
+	};
 	return (
 		<Form className="" onSubmit={handleSubmit}>
 			<Row className="pb-3">
-				<Col md={4}>
+				<Col md={2}>
 					<Form.Label>Date</Form.Label>
 				</Col>
 				<Col md={4}>
@@ -63,7 +84,7 @@ const WorkoutForm = props => {
 				</Col>
 			</Row>
 			<Row>
-				<Col md={4}>
+				<Col md={2}>
 					<Form.Label>Type</Form.Label>
 				</Col>
 				<Col md={4}>
@@ -82,26 +103,33 @@ const WorkoutForm = props => {
 				</Col>
 			</Row>
 			<Row>
-				<Col md={4}>
+				<Col md={2}>
 					<Form.Label>Distance</Form.Label>
 				</Col>
 				<Col md={4}>
 					<Form.Group controlId="distance">
-						<Form.Control
-							required
-							type="number"
-							placeholder="Enter Distance"
-							value={distance}
-							onChange={e => setDistance(e.target.value)}
-						/>
+						<InputGroup>
+							<Form.Control
+								required
+								type="number"
+								placeholder="Enter Distance"
+								value={distance}
+								onChange={e => setDistance(parseInt(e.target.value))}
+							/>
+							<InputGroup.Append>
+								<InputGroup.Text id="basic-addon2">
+									Meters
+								</InputGroup.Text>
+							</InputGroup.Append>
+						</InputGroup>
 					</Form.Group>
 				</Col>
 			</Row>
 			<Row>
-				<Col md={4}>
+				<Col sm={2}>
 					<Form.Label>Time</Form.Label>
 				</Col>
-				<Col md={2}>
+				<Col sm={2}>
 					<Form.Control
 						type="number"
 						placeholder="Hours"
@@ -109,7 +137,7 @@ const WorkoutForm = props => {
 						onChange={e => setHours(parseInt(e.target.value))}
 					/>
 				</Col>
-				<Col md={2}>
+				<Col sm={2}>
 					<Form.Control
 						type="number"
 						placeholder="Minutes"
@@ -117,7 +145,7 @@ const WorkoutForm = props => {
 						onChange={e => setMins(parseInt(e.target.value))}
 					/>
 				</Col>
-				<Col md={2}>
+				<Col sm={2}>
 					<Form.Control
 						type="number"
 						placeholder="Seconds"
@@ -125,7 +153,7 @@ const WorkoutForm = props => {
 						onChange={e => setSecs(parseInt(e.target.value))}
 					/>
 				</Col>
-				<Col md={2}>
+				<Col sm={2}>
 					<Form.Control
 						type="number"
 						placeholder="Tenths"
@@ -135,10 +163,10 @@ const WorkoutForm = props => {
 				</Col>
 			</Row>
 			<Row className="py-2">
-				<Col md={4}>
+				<Col md={2}>
 					<Form.Label>Weight Class</Form.Label>
 				</Col>
-				<Col md={4}>
+				<Col md={3}>
 					<fieldset>
 						<Form.Group controlId="weightClass">
 							<Form.Check
@@ -164,18 +192,16 @@ const WorkoutForm = props => {
 				</Col>
 			</Row>
 			<Row>
-				<Col md={4}>
+				<Col md={2}>
 					<Form.Label>Notes</Form.Label>
 				</Col>
-				<Col>
+				<Col md={5}>
 					<Form.Control as="textarea" rows="3" onChange={e => setNotes(e.target.value)} />
 				</Col>
 			</Row>
 			<Row className="pt-3">
-				<Col className="col-md-4 offset-md-4">
-					<Button variant="primary" type="submit">
-						Submit
-					</Button>
+				<Col sm={6} className="offset-sm-2">
+					{renderSubmitButtons()}
 				</Col>
 			</Row>
 		</Form>

@@ -2,14 +2,14 @@ import React from 'react';
 import WorkoutForm from './WorkoutForm';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { Container } from 'react-bootstrap';
 
-const EditWorkout = ({ workout, editWorkout }) => {
+const EditWorkout = ({ workout, editWorkout, deleteWorkout }) => {
 	return (
-		<React.Fragment>
+		<Container className="mt-5">
 			<h2>Edit Workout</h2>
-			<WorkoutForm workout={workout} onSubmit={editWorkout} />
-		</React.Fragment>
+			<WorkoutForm workout={workout} onSubmit={editWorkout} deleteWorkout={deleteWorkout} />
+		</Container>
 	);
 };
 

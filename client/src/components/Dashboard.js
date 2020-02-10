@@ -1,20 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Row, Col, CardDeck } from 'react-bootstrap';
-import { Container, Button } from 'react-floating-action-button';
 import * as actions from '../actions';
-
 import ListWorkouts from './ListWorkouts';
 import WorkoutForm from './WorkoutForm';
 import DisplayCard from './DisplayCard';
+import moment from 'moment';
+import { lifetimeMeters, seasonMeters } from '../utils';
 
-const Dashboard = ({ addWorkout, workouts }) => {
-	const reducer = (acc, obj) => acc + obj.distance;
-	const lifetimeMeters = () => {
-		return workouts.reduce(reducer, 0);
-	};
-
+const Dashboard = ({ addWorkout, deleteWorkout, workouts }) => {
 	return (
 		<div className="mx-5">
 			<Row className="pt-5">
@@ -23,8 +17,14 @@ const Dashboard = ({ addWorkout, workouts }) => {
 				</Col>
 				<Col>
 					<CardDeck>
-						<DisplayCard title={'Lifetime Meters'} distance={lifetimeMeters()} />
-						<DisplayCard title={'Season Meters'} distance={10033} />
+						<DisplayCard
+							title={'Lifetime Meters'}
+							distance={lifetimeMeters(workouts)}
+						/>
+						<DisplayCard
+							title={`${moment().format('YYYY')} Season Meters`}
+							distance={seasonMeters(workouts)}
+						/>
 					</CardDeck>
 				</Col>
 			</Row>
@@ -33,16 +33,6 @@ const Dashboard = ({ addWorkout, workouts }) => {
 					<ListWorkouts workouts={workouts} />
 				</Col>
 			</Row>
-			<Container>
-				<Link to="/workouts/new" style={{ textDecoration: 'none' }}>
-					<Button
-						tooltip="The big plus button!"
-						icon="fas fa-plus"
-						rotate={true}
-						// onClick={() => alert('FAB Rocks!')}
-					/>
-				</Link>
-			</Container>
 		</div>
 	);
 };
