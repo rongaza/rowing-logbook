@@ -5,23 +5,26 @@ const Workout = mongoose.model('workouts');
 
 module.exports = app => {
 	app.get('/api/workouts', requireLogin, async (req, res) => {
-		const workouts = await Workout.find({ _user: req.user.id });
-		res.send(workouts);
+		try {
+			const workouts = await Workout.find({ _user: req.user.id });
+			res.send(workouts);
+		} catch (error) {
+			res.status(503).send(error);
+		}
 	});
 
 	app.post('/api/workouts', requireLogin, async (req, res) => {
-		const { date, type, distance, time, weightClass, notes } = req.body;
-		const workout = new Workout({
-			date,
-			type,
-			distance,
-			time,
-			weightClass,
-			notes,
-			_user: req.user.id,
-		});
-
 		try {
+			const { date, type, distance, time, weightClass, notes } = req.body;
+			const workout = new Workout({
+				date,
+				type,
+				distance,
+				time,
+				weightClass,
+				notes,
+				_user: req.user.id,
+			});
 			await workout.save();
 			res.send(workout);
 		} catch (error) {
@@ -30,17 +33,15 @@ module.exports = app => {
 	});
 
 	app.put('/api/workouts', requireLogin, async (req, res) => {
-		// console.log('update workout route');
-		// console.log(req.body);
-		// const { _id, date, type, distance, time, weightClass, notes } = req.body;
-
-		const updatedWorkout = await Workout.findByIdAndUpdate(
-			{ _id: req.body._id },
-			{ ...req.body },
-			{ useFindAndModify: false }
-		);
-
 		try {
+			const updatedWorkout = await Workout.findByIdAndUpdate(
+				{ _id: req.body._id },
+				{ ...req.body },
+				{
+					new: true,
+					useFindAndModify: false,
+				}
+			);
 			await updatedWorkout.save();
 			res.send(updatedWorkout);
 		} catch (error) {
@@ -49,7 +50,11 @@ module.exports = app => {
 	});
 
 	app.delete('/api/workouts', requireLogin, async (req, res) => {
-		const workout = await Workout.findOneAndDelete({ _id: req.body.id });
-		res.send(workout);
+		try {
+			const workout = await Workout.findOneAndDelete({ _id: req.body.id });
+			res.send(workout);
+		} catch (error) {
+			console.log(error);
+		}
 	});
 };

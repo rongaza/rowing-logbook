@@ -8,15 +8,14 @@ import 'react-day-picker/lib/style.css';
 import { formatDate, parseDate } from 'react-day-picker/moment';
 
 const WorkoutForm = props => {
-	// used to update record
-	const _id = props.workout ? props.workout._id : null;
+	const _id = props.workout ? props.workout._id : '';
 	const [date, setDate] = useState(props.workout ? props.workout.date : new moment());
 	const [type, setType] = useState(props.workout ? props.workout.type : 'Indoor Rower');
 	const [distance, setDistance] = useState(props.workout ? props.workout.distance : '');
-	const [hours, setHours] = useState('');
-	const [mins, setMins] = useState('');
-	const [secs, setSecs] = useState('');
-	const [tenths, setTenths] = useState('');
+	const [hours, setHours] = useState(props.workout ? props.workout.time.hours : '');
+	const [mins, setMins] = useState(props.workout ? props.workout.time.mins : '');
+	const [secs, setSecs] = useState(props.workout ? props.workout.time.secs : '');
+	const [tenths, setTenths] = useState(props.workout ? props.workout.time.tenths : '');
 	const [weightClass, setWeightClass] = useState(props.workout ? props.workout.weightClass : '');
 	const [notes, setNotes] = useState(props.workout ? props.workout.notes : '');
 
@@ -46,10 +45,6 @@ const WorkoutForm = props => {
 		}
 	};
 
-	const convertTime = () => {
-		return hours + mins + secs + tenths;
-	};
-
 	const handleSubmit = e => {
 		e.preventDefault();
 		props.onSubmit({
@@ -57,7 +52,13 @@ const WorkoutForm = props => {
 			date,
 			type,
 			distance,
-			time: convertTime(),
+			time: {
+				hours,
+				mins,
+				secs,
+				tenths,
+				totalSeconds: hours * 60 * 60 + mins * 60 + secs + tenths / 10,
+			},
 			weightClass,
 			notes,
 		});
@@ -196,7 +197,12 @@ const WorkoutForm = props => {
 					<Form.Label>Notes</Form.Label>
 				</Col>
 				<Col md={5}>
-					<Form.Control as="textarea" rows="3" onChange={e => setNotes(e.target.value)} />
+					<Form.Control
+						as="textarea"
+						rows="3"
+						value={notes}
+						onChange={e => setNotes(e.target.value)}
+					/>
 				</Col>
 			</Row>
 			<Row className="pt-3">

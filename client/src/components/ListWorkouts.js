@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import moment from 'moment';
+import { convertTimeDisplay, sortedWorkoutsByDate } from '../utils';
 
 const ListWorkouts = ({ workouts }) => {
-	const sortedWorkouts = workouts.sort((a, b) => {
-		return moment(b.date) - moment(a.date);
-	});
+	const sortedWorkouts = sortedWorkoutsByDate(workouts);
+
+	// distance = (time/split) * 500
+	// split = 500 * (time/distance)
+	// time = split * (distance/500)
+	// watts = 2.8/(split/500)³
 
 	const renderWorkoutList = () => {
 		if (workouts.length > 0) {
@@ -15,16 +19,16 @@ const ListWorkouts = ({ workouts }) => {
 				const { _id, date, distance, time, type, notes } = workout;
 				return (
 					<tr key={_id}>
-						<td>
-							<Link to={`/workouts/edit/${_id}`}>
-								{moment(date).format('MM/DD/YYYY')}
-							</Link>
-						</td>
+						<td>{moment(date).format('MM/DD/YYYY')}</td>
 
+						<td>{distance}m</td>
+						<td>{convertTimeDisplay(time.totalSeconds)}</td>
 						<td>{type}</td>
-						<td>{distance}</td>
-						<td>{time}</td>
 						<td>{notes}</td>
+						<td>
+							<Link to={`/workouts/details/${_id}`}>Details</Link>/
+							<Link to={`/workouts/edit/${_id}`}>Edit</Link>
+						</td>
 					</tr>
 				);
 			});
@@ -35,16 +39,18 @@ const ListWorkouts = ({ workouts }) => {
 
 	return (
 		<div>
-			<h2>Workout List</h2>
+			<h2>Latest Workouts</h2>
 
 			<Table striped bordered hover>
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th>Type</th>
+
 						<th>Distance</th>
 						<th>Time</th>
+						<th>Type</th>
 						<th>Notes</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>{renderWorkoutList()}</tbody>

@@ -29,13 +29,17 @@ export const addWorkout = workout => async dispatch => {
 };
 
 export const editWorkout = workout => async dispatch => {
-	const res = await axios.put('/api/workouts', workout);
-
-	dispatch({ type: EDIT_WORKOUT, payload: workout });
+	try {
+		console.log('workout', workout);
+		const res = await axios.put('/api/workouts', workout);
+		// console.log(res.data);
+		dispatch({ type: EDIT_WORKOUT, payload: res.data });
+	} catch (error) {
+		console.error('error loading data', error.toString());
+	}
 };
 
 export const deleteWorkout = _id => dispatch => {
-	console.log('action: delete ', _id);
 	axios.delete('/api/workouts', { data: { id: _id } }).then(workout =>
 		dispatch({ type: DELETE_WORKOUT, payload: workout.data })
 	);

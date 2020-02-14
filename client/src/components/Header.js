@@ -29,8 +29,6 @@ const Header = ({ auth }) => {
 								<Link to={'/workouts'}>LOG</Link>
 							</Navbar.Text>
 							<Nav.Link>HISTORY</Nav.Link>
-							<Nav.Link>RANKINGS</Nav.Link>
-							<Nav.Link>RANKED WORKOUTS</Nav.Link>
 						</Nav>
 						<Button href="/api/logout" variant="outline-primary">
 							Logout
