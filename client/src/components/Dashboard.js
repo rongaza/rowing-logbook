@@ -13,16 +13,13 @@ import { lifetimeMeters, seasonMeters } from '../utils';
 const Dashboard = ({ addWorkout, workouts }) => {
 	return (
 		<div className="mx-5">
-			<Row className="pt-5">
+			<Row className="mb-3 pt-5">
 				<Col lg={8} className="pr-5">
 					<Row>
 						<WorkoutForm onSubmit={addWorkout} />
 					</Row>
-					<Row>
-						<ListWorkouts workouts={workouts} />
-					</Row>
 				</Col>
-				<Col lg={4}>
+				<Col md={4}>
 					<Row>
 						<Col>
 							<DisplayCard
@@ -40,9 +37,14 @@ const Dashboard = ({ addWorkout, workouts }) => {
 					<Row>
 						<Charts />
 					</Row>
-					<Row>
-						<RankedWorkouts />
-					</Row>
+				</Col>
+			</Row>
+			<Row className="mt-5 ">
+				<Col lg={8} className="pr-5">
+					<ListWorkouts workouts={workouts} />
+				</Col>
+				<Col>
+					<RankedWorkouts />
 				</Col>
 			</Row>
 		</div>

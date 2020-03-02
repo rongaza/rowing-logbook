@@ -9,8 +9,10 @@ require('./models/User');
 require('./models/Workout');
 require('./services/passport');
 
-// mongo DB
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+// connect to mongoDB
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+	.then(console.log('MongoDB connected'))
+	.catch(err => console.log(err));
 
 // create express app
 const app = express();
@@ -36,6 +38,7 @@ app.use(passport.session());
 // import routes
 require('./routes/authRoutes')(app);
 require('./routes/workoutRoutes')(app);
+require('./routes/profileRoutes')(app);
 
 // handle routing in production
 if (process.env.NODE_ENV === 'production') {

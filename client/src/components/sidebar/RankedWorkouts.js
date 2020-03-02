@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortWorkoutsByTime } from '../../utils/index';
+import { sortWorkoutsByTime, convertTimeDisplay } from '../../utils/index';
 import { connect } from 'react-redux';
 import { Table, Col } from 'react-bootstrap';
 import moment from 'moment';
@@ -34,9 +34,9 @@ const RankedWorkouts = ({ workouts }) => {
 		populateRankedWorkouts();
 		return rankedWorkouts.map(workout => {
 			return (
-				<tr>
-					<td>{workout.distance}</td>
-					<td>{workout.time.totalSeconds}</td>
+				<tr key={workout._id}>
+					<td>{workout.distance}m</td>
+					<td>{convertTimeDisplay(workout.time.totalSeconds)}</td>
 					<td>{moment(workout.date).format('M/D/YY')}</td>
 				</tr>
 			);

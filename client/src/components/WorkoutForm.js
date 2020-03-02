@@ -19,6 +19,18 @@ const WorkoutForm = props => {
 	const [weightClass, setWeightClass] = useState(props.workout ? props.workout.weightClass : '');
 	const [notes, setNotes] = useState(props.workout ? props.workout.notes : '');
 
+	const resetForm = () => {
+		setDate(new moment());
+		setType('Indoor Rower');
+		setDistance('');
+		setHours('');
+		setMins('');
+		setSecs('');
+		setTenths('');
+		setWeightClass('');
+		setNotes('');
+	};
+
 	const renderSubmitButtons = () => {
 		if (props.workout) {
 			return (
@@ -62,6 +74,7 @@ const WorkoutForm = props => {
 			weightClass,
 			notes,
 		});
+		resetForm();
 		props.history.push('/workouts');
 	};
 

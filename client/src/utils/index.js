@@ -22,11 +22,11 @@ export const convertTimeDisplay = totalSeconds => {
 	let m = Math.floor((secs % 3600) / 60);
 	let s = Math.floor((secs % 3600) % 60);
 
-	const hDisplay = h !== 0 ? `${h}:` : '';
-	const mDisplay = m !== 0 ? `${m}:` : '';
-	const sDisplay = s !== 0 ? `${s}` : '';
-	const tDisplay = tenths !== undefined ? `.${tenths}` : '';
-	return `${hDisplay}${mDisplay}${sDisplay}${tDisplay}`;
+	const hDisplay = h !== 0 ? `${h}` : '0';
+	const mDisplay = m !== 0 ? `${m}` : '0';
+	const sDisplay = s !== 0 ? `${s}` : '0';
+	const tDisplay = tenths !== undefined ? `${tenths}` : '0';
+	return `${hDisplay}:${mDisplay}:${sDisplay}.${tDisplay}`;
 	// return {
 	// 	hours: h,
 	// 	minutes: m,
@@ -58,9 +58,10 @@ export const sortWorkoutsByTime = (workouts, order = 'asc') => {
 export const last30DaysWorkouts = workouts => {
 	const month = moment().format('M');
 
-	return workouts.filter(workout => {
+	const data = workouts.filter(workout => {
 		return moment(workout.date).format('M') === month;
 	});
+	return sortedWorkoutsByDate(data, 'asc');
 };
 
 export const getRankedWorkout = (workouts, distance) => {

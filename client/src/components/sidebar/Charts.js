@@ -9,14 +9,14 @@ const Charts = ({ workouts }) => {
 		return moment(date).format('M/D');
 	};
 	return (
-		<div className="mt-3 ">
-			Last 30 Days
+		<div className="mt-5 ">
+			<h3 className="text-center">Last 30 Days</h3>
 			<LineChart
-				className="mt-3"
+				className="mt-3 text-center"
 				width={400}
 				height={250}
 				data={last30DaysWorkouts(workouts)}
-				margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
+				margin={{ top: 5, right: 5, left: 7, bottom: 5 }}
 			>
 				<CartesianGrid strokeDasharray="3 3" />
 				<Tooltip />

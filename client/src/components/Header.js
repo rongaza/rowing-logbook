@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Header = ({ auth }) => {
 	const renderContent = () => {
@@ -11,7 +12,6 @@ const Header = ({ auth }) => {
 			case false:
 				return (
 					<React.Fragment>
-						<Nav></Nav>
 						<Button
 							className="ml-auto"
 							variant="outline-primary"
@@ -25,14 +25,22 @@ const Header = ({ auth }) => {
 				return (
 					<React.Fragment>
 						<Nav className="mr-auto">
-							<Navbar.Text>
-								<Link to={'/workouts'}>LOG</Link>
-							</Navbar.Text>
-							<Nav.Link>HISTORY</Nav.Link>
+							<Nav.Item>
+								<Link to={'/workouts'}>DASHBOARD</Link>
+							</Nav.Item>
 						</Nav>
-						<Button href="/api/logout" variant="outline-primary">
-							Logout
-						</Button>
+						<Nav.Item>
+							<Link to={'/account/profile'}>
+								<FontAwesomeIcon
+									icon="user"
+									className="mr-2"
+									size="2x"
+								/>
+							</Link>
+							<Button href="/api/logout" variant="outline-primary">
+								Logout
+							</Button>
+						</Nav.Item>
 					</React.Fragment>
 				);
 		}

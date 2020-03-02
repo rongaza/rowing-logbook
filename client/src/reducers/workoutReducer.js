@@ -7,11 +7,9 @@ export default function(state = [], action) {
 
 		case FETCH_WORKOUTS:
 			return [...action.payload];
-		case EDIT_WORKOUT:
-			// console.log(typeof action.payload.distance);
 
+		case EDIT_WORKOUT:
 			return state.map(workout => {
-				// console.log(typeof(workout.distance));
 				if (workout._id === action.payload._id) {
 					return {
 						...workout,
@@ -21,10 +19,8 @@ export default function(state = [], action) {
 					return workout;
 				}
 			});
-		// return state;
 
 		case DELETE_WORKOUT:
-			console.log(action.payload);
 			return state.filter(workout => {
 				return workout._id !== action.payload._id;
 			});
