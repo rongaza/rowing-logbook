@@ -56,10 +56,12 @@ export const sortWorkoutsByTime = (workouts, order = 'asc') => {
 };
 
 export const last30DaysWorkouts = workouts => {
-	const month = moment().format('M');
+	// const month = moment().format('M');
+	const today = moment.now();
+	const start = moment(today).subtract(30, 'days');
 
 	const data = workouts.filter(workout => {
-		return moment(workout.date).format('M') === month;
+		return moment(workout.date).isBetween(start, today);
 	});
 	return sortedWorkoutsByDate(data, 'asc');
 };
